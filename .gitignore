@@ -14,3 +14,16 @@ backups/
 references/
 .claude/
 __pycache__/
+
+# kept on this Mac only: files the site does not use (older characters, build notes,
+# scripts for earlier model versions, the auto-generated agent notes)
+public/models/character.glb
+public/models/gus.glb
+public/models/*.meta.json
+public/brand/chooli-logo-footer.svg
+scripts/build_character.py
+scripts/build_gorilla_character.py
+scripts/build_gus_character.py
+scripts/convert_mountain.py
+scripts/gus/
+AGENTS.md
