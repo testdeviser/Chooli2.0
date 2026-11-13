@@ -1,0 +1,16 @@
+node_modules
+.next
+.cache
+next-env.d.ts
+*.tsbuildinfo
+
+# macOS
+.DS_Store
+
+# source 3D files (several are over GitHub's 100 MB limit) and local backups / work files;
+# the site only needs the web-ready models in public/models
+assets/
+backups/
+references/
+.claude/
+__pycache__/

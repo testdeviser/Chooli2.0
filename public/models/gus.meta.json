@@ -1,0 +1,29 @@
+{
+  "clips": {},
+  "strideOriginal": 1.7609,
+  "weightsSeparated": 2149,
+  "weightsSmoothed": true,
+  "unweightedVerts": 0,
+  "vertexGroups": 22,
+  "stride": 2.0662,
+  "minZ": {
+    "Idle": [
+      -0.006,
+      -0.007
+    ],
+    "Walk": [
+      -0.075,
+      -0.017,
+      -0.078,
+      -0.126,
+      -0.054,
+      -0.027,
+      -0.085,
+      -0.113
+    ]
+  },
+  "lift": 0.02,
+  "height": 2.197,
+  "tris": 60000,
+  "glbBytes": 4084268
+}
