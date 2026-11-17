@@ -6,10 +6,36 @@ import { progress } from '@/lib/animation/progress';
 import { applyReveal } from '@/lib/animation/reveal';
 
 /**
- * Final intro screen: "Why Choose Chooli", kept short.
+ * The four core services, with the same line icons as the services section below
+ * (NextSection), in COPY.about.services order. Drawn on a 100 x 100 grid.
+ */
+const SERVICE_ICONS = [
+  // SEO & Local Search
+  <svg key="seo" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round">
+    <circle cx="42" cy="42" r="30" />
+    <path d="M64 64 86 86" />
+  </svg>,
+  // Paid Advertising
+  <svg key="ads" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinejoin="round" strokeLinecap="round">
+    <path d="M14 40h18l40-22v64L32 60H14z" />
+    <path d="M32 40v20M24 60l6 24h10l-4-24" />
+  </svg>,
+  // Web Development
+  <svg key="web" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M36 22 10 50l26 28M64 22l26 28-26 28" />
+  </svg>,
+  // E-Commerce Management
+  <svg key="shop" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinejoin="round" strokeLinecap="round">
+    <path d="M18 30h64v56H18zM18 30l8-14h48l8 14" />
+    <path d="M38 46a12 12 0 0 0 24 0" />
+  </svg>,
+];
+
+/**
+ * Final intro screen: "Meet Chooli" with the four core services, kept short.
  * Sits to the right of Gus in the three-quarter shot.
  *
- *   two-tone statement headline -> short paragraph -> four compact numbered cards
+ *   two-tone statement headline -> short paragraph -> four service cards (icon + number + title)
  *
  * Each piece has a `data-step` (scroll offset after the screen starts) and stays once shown.
  */
@@ -35,23 +61,31 @@ export function AboutChooli() {
     >
       {/* two-tone statement */}
       <h2 data-step="0" data-rise="24" style={{ opacity: 0 }} className="text-legible font-display text-[clamp(2rem,3.5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] text-paper">
-        {c.heading} <span className="text-paper">{c.headingRest}</span>
+        <span className="text-brand-orange">{c.heading}</span> <span className="text-paper">{c.headingRest}</span>
       </h2>
       <p data-step="0.016" style={{ opacity: 0 }} className="text-legible mt-5 max-w-[34rem] text-[clamp(0.98rem,1.1vw,1.12rem)] leading-relaxed text-paper/75">
         <span className="font-semibold text-paper">{c.bodyLead}</span> {c.body}
       </p>
 
       <ul className="mt-7 grid grid-cols-2 gap-3">
-        {c.why.map((title, i) => (
+        {c.services.map((title, i) => (
           <li
             key={title}
             data-step={(0.03 + i * 0.009).toFixed(3)}
             data-rise="16"
             style={{ opacity: 0 }}
-            className="glass-panel flex min-h-[6.6rem] flex-col justify-between rounded-[18px] px-5 py-4"
+            className="glass-panel flex min-h-[7.6rem] flex-col justify-between rounded-[18px] px-4 py-4 md:px-5"
           >
-            <span className="self-end font-sans text-[0.68rem] font-extrabold tracking-[0.18em] text-brand-orange">{String(i + 1).padStart(2, '0')}</span>
-            <span className="mt-2 font-display text-[clamp(0.98rem,1.15vw,1.15rem)] font-bold leading-snug text-paper">{title}</span>
+            <span className="flex items-start justify-between">
+              <span
+                aria-hidden
+                className="grid h-11 w-11 place-items-center rounded-2xl md:h-12 md:w-12 bg-brand-orange/15 text-brand-orange ring-1 ring-inset ring-brand-orange/35 [&>svg]:h-[26px] [&>svg]:w-[26px]"
+              >
+                {SERVICE_ICONS[i]}
+              </span>
+              <span className="font-sans text-[0.68rem] font-extrabold tracking-[0.18em] text-brand-orange">{String(i + 1).padStart(2, '0')}</span>
+            </span>
+            <span className="mt-3 hyphens-auto font-display text-[clamp(0.9rem,1.15vw,1.15rem)] font-bold leading-snug text-paper">{title}</span>
           </li>
         ))}
       </ul>

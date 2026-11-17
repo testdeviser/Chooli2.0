@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
-import { CAMERA, CHARACTER, ENVIRONMENT, TIMELINE } from '@/lib/animation/config';
+import { CAMERA, CHARACTER, CINEMATIC, ENVIRONMENT, ROUTE, TIMELINE } from '@/lib/animation/config';
 import { clamp, smoothstep } from '@/lib/animation/math';
 import { progress } from '@/lib/animation/progress';
 import { HEADING, ROUTE_END, ROUTE_LENGTH, characterState, routePoint, shotState } from '@/lib/animation/timeline';
@@ -27,6 +27,11 @@ interface IntroSceneProps {
   fixedProgress?: number;
   onReady?: () => void;
 }
+
+/** cloud bank curtains in world z (the route runs along +z from ROUTE.start) */
+const cloudBankLayers = CINEMATIC.cloudBank.layers.map(
+  ([d, h, speed]) => [ROUTE.start[1] + d, h, speed] as [number, number, number],
+);
 
 const SAMPLE_STEP = 0.1; // metres between ground samples along the route
 
@@ -177,7 +182,7 @@ export function IntroScene({ lite = false, reducedMotion = false, fixedProgress,
     rig.group.rotation.y = HEADING;
     rig.group.visible = true;
     const breathing = CHARACTER.idleBreathing && !reducedMotion && cs.walkWeight < 1;
-    // arm stretch: once, in real time, when Gus arrives at the "It's me, Gus." screen
+    // gesture (crossed arms) when Gus arrives at the "It's me, Gus." screen
     const gs = gesture.current;
     const dur = rig.gestureDuration;
     const arrived = dur > 0 && !reducedMotion && fixedProgress === undefined && cs.walkWeight < 0.01 && p >= TIMELINE.walk[1] - 0.002 && p < CHARACTER.gesture.until;
@@ -188,12 +193,15 @@ export function IntroScene({ lite = false, reducedMotion = false, fixedProgress,
         gs.t = 0;
       } else gs.t += dt;
       const G = CHARACTER.gesture;
-      gs.w = gs.t >= dur ? 0 : smoothstep(0, G.blendIn, gs.t) * (1 - smoothstep(dur - G.blendOut, dur, gs.t));
+      gs.w = G.hold
+        ? smoothstep(0, G.blendIn, gs.t)
+        : gs.t >= dur ? 0 : smoothstep(0, G.blendIn, gs.t) * (1 - smoothstep(dur - G.blendOut, dur, gs.t));
     } else {
       gs.active = false;
       gs.w = Math.max(0, gs.w - dt / CHARACTER.gesture.leave);
     }
-    rig.setPose(cs.phase, cs.walkWeight, breathing ? state.clock.elapsedTime : 0, Math.min(gs.t, dur), gs.w);
+    const gestureTime = CHARACTER.gesture.hold && dur > 0 ? gs.t % dur : Math.min(gs.t, dur);
+    rig.setPose(cs.phase, cs.walkWeight, breathing ? state.clock.elapsedTime : 0, gestureTime, gs.w);
     // hidden in the opening shot, fades in out of the haze as the visitor starts scrolling
     rig.setOpacity(smoothstep(CHARACTER.fadeIn[0], CHARACTER.fadeIn[1], p));
 
@@ -285,6 +293,17 @@ export function IntroScene({ lite = false, reducedMotion = false, fixedProgress,
       <Ground />
       <Footprints fixedProgress={fixedProgress} />
       <Mist animate={!reducedMotion} />
+      <Mist
+        animate={!reducedMotion}
+        layers={cloudBankLayers}
+        width={CINEMATIC.cloudBank.width}
+        x={ROUTE.start[0]}
+        density={CINEMATIC.cloudBank.density}
+        billows={CINEMATIC.cloudBank.billows}
+        cover={CINEMATIC.cloudBank.cover}
+        thin={CINEMATIC.cloudBank.thin}
+        renderOrder={4}
+      />
       {!lite && <PostFX />}
       <group visible={!!terrain}>
         <Character ref={character} castShadow={!lite} />

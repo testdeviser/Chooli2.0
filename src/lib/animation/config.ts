@@ -23,6 +23,7 @@ export const LINKS = {
   industries: 'https://choolidigitalmarketing.com/industries',
   blog: 'https://choolidigitalmarketing.com/blog',
   phone: 'tel:+18129877007',
+  email: 'mailto:support@choolidigitalmarketing.com',
 } as const;
 
 /* ------------------------------------------------------------------ assets */
@@ -93,38 +94,50 @@ export const mountainPosition: [number, number, number] = [
 
 export const CHARACTER = {
   /**
-   * New Gus (assets/gus-new: Mixamo-rigged Walking.fbx + Waving.fbx) converted by
-   * scripts/gus-new/convert.mjs. Idle is the first frame of the wave.
+   * Gus as generated on Meshy (assets/gus-new/Gus-Crosed-Arms-Pose.glb: mesh, SmartRig skeleton,
+   * PBR material and the CrossArms loop, unchanged), Meshy's own walk from Walking-new.glb, and
+   * an Idle retargeted from the Mixamo Waving.fbx, built by scripts/gus-new/convert.mjs.
    * The previous Gus-v1 is still at /models/gus-character.glb (clips Idle / Walk / Stretch).
    */
   url: '/models/gus-new.glb',
-  clips: { idle: 'Idle', walk: 'Walk', gesture: 'Wave' },
+  clips: { idle: 'Idle', walk: 'Walk', gesture: 'CrossArms' },
   /**
-   * The wave (Waving.fbx) plays once, in real time, when Gus reaches the
-   * "It's me, Gus." screen, then he eases back to standing. It blends out if the visitor
-   * scrolls away and replays on the next arrival.
+   * When Gus reaches the "It's me, Gus." screen he folds his arms and keeps them crossed
+   * (the clip loops, a slight breathing sway) through the "Meet Chooli" shot. They unfold
+   * if the visitor scrolls back up the walk.
    */
   gesture: {
-    /** plays while scroll progress is between the end of the walk and this value */
-    until: 0.86,
-    blendIn: 0.5,
+    /** active while scroll progress is between the end of the walk and this value */
+    until: 1.01,
+    /** true: blend in and stay, looping the clip; false: play once, then blend out */
+    hold: true,
+    blendIn: 0.6,
     blendOut: 0.7,
     /** blend-out time when the visitor scrolls away mid-gesture */
     leave: 0.35,
   },
   /** metres travelled per walk cycle (measured on the retargeted walk) */
-  stride: 1.6291,
+  stride: 1.4408,
   scale: 1,
   /** extra Y rotation if a model does not face +Z in its rest pose */
   facingOffset: 0,
   /** approximate standing height, used for camera framing */
   height: 1.7,
-  /** hidden in the opening shot; fades in out of the haze over this scroll range */
-  fadeIn: [0.07, 0.2] as [number, number],
+  /**
+   * hidden at the very top; materialises inside the cloud bank (CINEMATIC.cloudBank) over this
+   * scroll range, before he starts walking out of it at TIMELINE.walk[0]
+   */
+  fadeIn: [0, 0.08] as [number, number],
   /** subtle breathing while standing; the walk itself is always scroll-scrubbed */
   idleBreathing: true,
   /** material overrides keyed by material name (none: Gus uses his own textures) */
   materials: {} as Record<string, { color: string; roughness: number; metalness: number }>,
+  /**
+   * Brings the fur closer to how it looks in the Meshy viewer (bright studio light) inside the
+   * cool, misty scene. `brightness` multiplies the texture colour (1 = as exported); `fill`
+   * adds a little self-lighting from the same texture so the shaded side does not go muddy.
+   */
+  look: { brightness: 1.5, fill: 0.15 },
 };
 
 /* ------------------------------------------------------------------- route */
@@ -138,7 +151,7 @@ export const CHARACTER = {
 export const ROUTE = {
   start: [0, 12] as [number, number],
   direction: [0, 1] as [number, number],
-  cycles: 6,
+  cycles: 4,
   /** distance over which standing <-> walking is blended at each end */
   blendDistance: 0.55,
   /** share of the walk spent accelerating / decelerating */
@@ -174,17 +187,27 @@ export const SMOOTH_SCROLL = {
 
 /** Scroll progress (0..1) across the pinned introduction. */
 export const TIMELINE = {
-  walk: [0.2, 0.55] as [number, number],
-  /** total scroll length of the pinned intro, in viewport heights */
-  scrollLengthVh: 465,
+  /** Gus walks from the first scroll (he starts inside the cloud bank and pushes out of it) */
+  walk: [0.02, 0.555] as [number, number],
+  /**
+   * total scroll length of the pinned intro, in viewport heights. The scrubbed range is this
+   * minus 2 (the pinned first screen and the last one, where the next section slides over):
+   * 3.5 viewport heights = 1.55 opening + walk + 1.95 for the "It's me, Gus." / about shots.
+   */
+  scrollLengthVh: 550,
   /**
    * Scroll position (0..1 of the scrubbed range) -> timeline progress, piecewise linear.
-   * The first stretch (opening mountain -> "It's me, Gus." at 0.555) is compressed so the
-   * visitor reaches Gus quickly (~0.7 viewport heights); the rest keeps its earlier pace.
+   *   0      -> 0.4429  Gus walks out of the cloud to the camera from the first scroll, while
+   *                     the hero copy fades; "It's me, Gus." copy comes in over his last steps
+   *                     (~1.55 viewport heights)
+   *   0.4429 -> 1       "It's me, Gus." and the about shot       (~1.95, unchanged pace)
+   * Balance: "It's me, Gus." arrives after ~1.5 viewport heights (about two touchpad swipes),
+   * while the walk (ROUTE.cycles, kept short) still has enough scroll that a swipe does not
+   * make him sprint.
    */
   scrollMap: [
     [0, 0],
-    [0.264, 0.555],
+    [0.4429, 0.555],
     [1, 1],
   ] as [number, number][],
   /**
@@ -213,9 +236,9 @@ export interface Shot {
 export const SHOTS: Shot[] = [
   // Camera A - wide establishing shot
   { name: 'A  wide', at: 0.0, cam: [2.5, 8.6, 41], look: [0, 7, 0], fov: 38 },
-  { name: 'A  settle', at: 0.2, cam: [2.0, 8.0, 39], look: [0, 6.5, 0], fov: 38 },
+  { name: 'A  settle', at: 0.12, cam: [2.0, 8.0, 39], look: [0, 6.5, 0], fov: 38 },
   // Camera B - lower, closer tracking shot while Gus walks in (slightly to his side)
-  { name: 'B  track', at: 0.37, cam: [3.4, 2.3, 11.5], look: [0, 1.45, 0], fov: 37 },
+  { name: 'B  track', at: 0.32, cam: [3.4, 2.3, 11.5], look: [0, 1.45, 0], fov: 37 },
   // Camera C - "It's me, Gus." medium shot
   { name: 'C  gus', at: 0.55, cam: [0.0, 0.95, 4.5], look: [0, 1.3, 0], fov: 40 },
   { name: 'C  hold', at: 0.72, cam: [-0.3, 0.95, 4.25], look: [0, 1.3, 0], fov: 40 },
@@ -371,6 +394,32 @@ export const CINEMATIC = {
     ] as [number, number, number][],
     width: 520,
   },
+  /**
+   * Low bank of cloud around Gus's starting point. In the opening shot he stands inside it
+   * (curtains behind AND in front of him), so he reads as a shape blended into the cloud;
+   * as the visitor scrolls he walks forward through the front curtains and out into the clear
+   * space before them, with the bank staying behind him for depth. It thins a little once he
+   * is out, so the later shots are not washed out.
+   */
+  cloudBank: {
+    /** [distance from Gus's start along the route (+ = toward the camera), height, speed] */
+    layers: [
+      [-2.2, 7, 0.5],
+      [-0.9, 6, 0.7],
+      [0.5, 6.5, 0.9],
+      [1.2, 6, 1.1],
+      [1.9, 5.5, 1.3],
+    ] as [number, number, number][],
+    width: 90,
+    /** multiplies the theme's mist opacity */
+    density: 1.5,
+    /** billows across the width (smaller = bigger, softer puffs) */
+    billows: 7,
+    /** 0 = patchy wisps, 1 = closed cloud */
+    cover: 0.7,
+    /** eases the density to `to` x between these progress values */
+    thin: { from: [0.25, 0.55] as [number, number], to: 0.1 },
+  },
   /** soft glow on the brightest highlights */
   bloom: { strength: 0.32, radius: 0.55, threshold: 0.82 },
   contrast: 1.06,
@@ -403,12 +452,12 @@ export const COPY = {
     },
   },
   about: {
-    /** "Why Choose Chooli" titles from the current choolidigitalmarketing.com homepage */
     heading: 'Meet Chooli.',
     headingRest: 'A different kind of digital marketing agency.',
     bodyLead: 'No fluff. No nonsense.',
     body: 'Just thoughtful strategies, real expertise, and a team focused on helping businesses grow.',
-    why: ['Local Strategy, Real Community Focus', 'Clear, Transparent Communication', 'Practical Growth Plans', 'Results That Matter'],
+    /** the four core services (same titles as the services section, NextSection) */
+    services: ['SEO & Local Search', 'Paid Advertising', 'Web Development', 'E-Commerce Management'],
   },
 };
 
@@ -493,13 +542,15 @@ export const CASES = {
 
 /** When each piece of text appears / leaves, in scroll progress. */
 export const TEXT = {
-  hero: { in: [-1, -1], out: [0.1, 0.19] },
-  scrollHint: { in: [-1, -1], out: [0.03, 0.1] },
-  gusHeading: { in: [0.555, 0.615], out: [0.72, 0.775] },
+  /** stays until Gus steps out of the cloud bank, then hands over to him (no empty moment) */
+  hero: { in: [-1, -1], out: [0.2, 0.28] },
+  scrollHint: { in: [-1, -1], out: [0.016, 0.054] },
+  /** comes in over Gus's last steps (the walk ends at TIMELINE.walk[1] = 0.555) */
+  gusHeading: { in: [0.42, 0.5], out: [0.72, 0.775] },
   /** final screen (Meet Chooli + Why Choose Chooli); its pieces follow each other from here */
   about: { in: [0.855, 0.89], out: [2, 2] },
   /** soft scrim behind the Gus copy */
-  gusScrim: { in: [0.5, 0.6], out: [0.72, 0.8] },
+  gusScrim: { in: [0.38, 0.48], out: [0.72, 0.8] },
   /** dark scrim behind the About copy */
   aboutScrim: { in: [0.8, 0.92], out: [2, 2] },
 };
