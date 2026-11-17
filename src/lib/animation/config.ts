@@ -378,6 +378,12 @@ export const THEMES = {
 
 export type ThemePalette = (typeof THEMES)['morning'];
 export const DEFAULT_THEME: ThemeName = 'morning';
+/**
+ * Show the morning / night switch in the header. While it is hidden the scene always opens
+ * in DEFAULT_THEME (a night choice saved earlier by a visitor is ignored, so nobody is stuck
+ * in a theme they can no longer change).
+ */
+export const THEME_SWITCH = false;
 /** seconds for the cross-fade between themes */
 export const THEME_TRANSITION = 1.6;
 
