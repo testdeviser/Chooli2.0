@@ -94,6 +94,13 @@ export const Character = forwardRef<CharacterHandle, CharacterProps>(function Ch
       mat.transparent = false;
       mat.depthWrite = true;
       mat.needsUpdate = true;
+      const { brightness, fill } = CHARACTER.look;
+      mat.color.setScalar(brightness);
+      if (mat.map && fill > 0) {
+        mat.emissiveMap = mat.map;
+        mat.emissive.setScalar(1);
+        mat.emissiveIntensity = fill;
+      }
       const override = materials?.[mat.name];
       if (override) {
         mat.color.set(override.color);

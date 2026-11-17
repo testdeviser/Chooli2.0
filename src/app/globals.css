@@ -245,10 +245,21 @@ body {
 .menu-icon-bottom { top: 8.5px; width: 11px; }
 .group:hover .menu-icon-bottom { width: 20px; }
 .group:hover .menu-icon-top { width: 13px; }
-.is-open .menu-icon-top,
-.is-open .menu-icon-bottom { top: 4.75px; width: 18px; }
-.is-open .menu-icon-top { transform: rotate(45deg); }
-.is-open .menu-icon-bottom { transform: rotate(-45deg); }
+/* open: a clean, centred X in one colour. The hover stretch is switched off here (it used
+   to keep running while open and bent the X out of shape). */
+.hdr-menu.is-open .menu-icon-top,
+.hdr-menu.is-open .menu-icon-bottom,
+.hdr-menu.is-open:hover .menu-icon-top,
+.hdr-menu.is-open:hover .menu-icon-bottom {
+  top: 4.75px;
+  right: 1px;
+  width: 18px;
+  background: currentColor;
+}
+.hdr-menu.is-open .menu-icon-top { transform: rotate(45deg); }
+.hdr-menu.is-open .menu-icon-bottom { transform: rotate(-45deg); }
+.hdr-menu.is-open:hover .menu-icon { transform: rotate(90deg); }
+.menu-icon { transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
 /* ------------------------------------------------- opening sequence entrance */
 .intro-enter {
