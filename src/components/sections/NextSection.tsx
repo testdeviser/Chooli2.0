@@ -18,9 +18,11 @@ const SERVICES = [
     tone: 'bg-brand-orange',
     angle: 19,
     icon: (
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round">
-        <circle cx="42" cy="42" r="30" />
-        <path d="M64 64 86 86" />
+      <svg viewBox="0 0 100 100" fill="none" stroke="white" strokeOpacity="0.65" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="40" cy="39" r="27" fill="white" fillOpacity="0.08" />
+        <path d="m60 59 22 22" />
+        <path d="M40 56s13-12 13-22a13 13 0 1 0-26 0c0 10 13 22 13 22Z" />
+        <circle cx="40" cy="34" r="4.5" />
       </svg>
     ),
   },
@@ -31,9 +33,10 @@ const SERVICES = [
     tone: 'bg-brand-navy',
     angle: 11,
     icon: (
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round">
-        <path d="M14 40h18l40-22v64L32 60H14z" />
-        <path d="M32 40v20M24 60l6 24h10l-4-24" />
+      <svg viewBox="0 0 100 100" fill="none" stroke="white" strokeOpacity="0.65" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 37h17l33-17v48L31 53H14Z" fill="white" fillOpacity="0.08" />
+        <path d="M31 37v16M26 53l5 23h12l-7-21" />
+        <path d="M75 44h11M74 31l8-7M74 57l8 7" />
       </svg>
     ),
   },
@@ -44,8 +47,14 @@ const SERVICES = [
     tone: 'bg-brand-ridge',
     angle: -11,
     icon: (
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M36 22 10 50l26 28M64 22l26 28-26 28" />
+      <svg viewBox="0 0 100 100" fill="none" stroke="white" strokeOpacity="0.65" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="11" y="18" width="73" height="59" rx="8" fill="white" fillOpacity="0.08" />
+        <path d="M11 33h73M29 43 20 53l9 10M65 43l9 10-9 10M53 42 43 64" />
+        <g fill="white" fillOpacity="0.65" stroke="none">
+          <circle cx="21" cy="25.5" r="1.8" />
+          <circle cx="28" cy="25.5" r="1.8" />
+          <circle cx="35" cy="25.5" r="1.8" />
+        </g>
       </svg>
     ),
   },
@@ -56,9 +65,12 @@ const SERVICES = [
     tone: 'bg-brand-sky',
     angle: -19,
     icon: (
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round">
-        <path d="M18 30h64v56H18zM18 30l8-14h48l8 14" />
-        <path d="M38 46a12 12 0 0 0 24 0" />
+      <svg viewBox="0 0 100 100" fill="none" stroke="white" strokeOpacity="0.65" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="17" y="33" width="58" height="48" rx="7" fill="white" fillOpacity="0.08" stroke="none" />
+        <path d="M75 48v-8a7 7 0 0 0-7-7H24a7 7 0 0 0-7 7v34a7 7 0 0 0 7 7h25" />
+        <path d="M31 38V24a15 15 0 0 1 30 0v14" />
+        <circle cx="68" cy="65" r="14" fill="white" fillOpacity="0.08" />
+        <path d="m62 65 4 4 7-8" />
       </svg>
     ),
   },
