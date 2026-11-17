@@ -123,7 +123,12 @@ export function HowWeWork() {
   }, []);
 
   return (
-    <section aria-labelledby="process-heading" className="relative z-10 bg-white pb-32 pt-28 text-brand-ink">
+    <section aria-labelledby="process-heading" className="relative z-10 bg-white pb-32 pt-28 text-brand-ink" style={{
+  backgroundImage: "url('/images/how-we-work-bg.png')",
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+}}>
       <div className="mx-auto max-w-[46rem] px-6 text-center">
         <p className="font-sans text-[0.8rem] font-extrabold uppercase tracking-[0.04em] text-brand-orange">How we work together</p>
         <h2 id="process-heading" className="mt-4 font-display text-[clamp(2.2rem,3.8vw,3.4rem)] font-extrabold leading-[1.12] tracking-[-0.025em] text-brand-navy">
