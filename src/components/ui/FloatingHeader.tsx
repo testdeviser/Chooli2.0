@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { INTRO, LINKS } from '@/lib/animation/config';
+import { INTRO, LINKS, THEME_SWITCH } from '@/lib/animation/config';
 import { introClock } from '@/lib/animation/introClock';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -232,7 +232,8 @@ export function FloatingHeader() {
 
         {/* scene switch + call to action (right) */}
         <div className="header-cta pointer-events-auto flex items-center gap-3">
-        <ThemeToggle />
+        {/* morning / night switch: hidden for now (THEME_SWITCH in config.ts) */}
+        {THEME_SWITCH && <ThemeToggle />}
         {/* the one primary CTA (brand board: "Talk About Your Business"; navy on orange) */}
         <a
           href={LINKS.contact}

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { DEFAULT_THEME, THEMES, THEME_TRANSITION, type ThemeName, type ThemePalette } from './config';
+import { DEFAULT_THEME, THEMES, THEME_SWITCH, THEME_TRANSITION, type ThemeName, type ThemePalette } from './config';
 
 /**
  * Scene theme (morning / night).
@@ -77,7 +77,7 @@ const morning = build(THEMES.morning);
 const night = build(THEMES.night);
 
 function initial(): ThemeName {
-  if (typeof window === 'undefined') return DEFAULT_THEME;
+  if (typeof window === 'undefined' || !THEME_SWITCH) return DEFAULT_THEME;
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     if (saved === 'morning' || saved === 'night') return saved;
