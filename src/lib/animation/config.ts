@@ -93,15 +93,14 @@ export const mountainPosition: [number, number, number] = [
 
 export const CHARACTER = {
   /**
-   * Gus-v1 (assets/Gus-v1.glb, a static T-pose sculpt) rigged to the Mixamo skeleton with the
-   * Idle / Walk / Stretch motions by scripts/gusv1/prep.py + scripts/gusv1/rig.py.
-   * The previous Gus is in backups/gus-character-pre-v1-2026-11-13/; the Mixamo stand-in is
-   * /models/character.glb.
+   * New Gus (assets/gus-new: Mixamo-rigged Walking.fbx + Waving.fbx) converted by
+   * scripts/gus-new/convert.mjs. Idle is the first frame of the wave.
+   * The previous Gus-v1 is still at /models/gus-character.glb (clips Idle / Walk / Stretch).
    */
-  url: '/models/gus-character.glb',
-  clips: { idle: 'Idle', walk: 'Walk', gesture: 'Stretch' },
+  url: '/models/gus-new.glb',
+  clips: { idle: 'Idle', walk: 'Walk', gesture: 'Wave' },
   /**
-   * The arm stretch (Arm-Stretching.fbx) plays once, in real time, when Gus reaches the
+   * The wave (Waving.fbx) plays once, in real time, when Gus reaches the
    * "It's me, Gus." screen, then he eases back to standing. It blends out if the visitor
    * scrolls away and replays on the next arrival.
    */
@@ -114,12 +113,12 @@ export const CHARACTER = {
     leave: 0.35,
   },
   /** metres travelled per walk cycle (measured on the retargeted walk) */
-  stride: 1.4546,
+  stride: 1.6291,
   scale: 1,
   /** extra Y rotation if a model does not face +Z in its rest pose */
   facingOffset: 0,
   /** approximate standing height, used for camera framing */
-  height: 1.79,
+  height: 1.7,
   /** hidden in the opening shot; fades in out of the haze over this scroll range */
   fadeIn: [0.07, 0.2] as [number, number],
   /** subtle breathing while standing; the walk itself is always scroll-scrubbed */
