@@ -4,6 +4,8 @@ import { CaseStudies } from '@/components/sections/CaseStudies';
 import { HowWeWork } from '@/components/sections/HowWeWork';
 import { MountainWordmark } from '@/components/sections/MountainWordmark';
 import { Community } from '@/components/sections/Community';
+import { SummitCTA } from '@/components/sections/SummitCTA';
+import { Footer } from '@/components/sections/Footer';
 import { FloatingHeader } from '@/components/ui/FloatingHeader';
 import { SmoothScroll } from '@/components/ui/SmoothScroll';
 
@@ -19,7 +21,9 @@ export default function Home() {
         <HowWeWork />
         <MountainWordmark />
         <Community />
+        <SummitCTA />
       </main>
+      <Footer />
     </>
   );
 }
