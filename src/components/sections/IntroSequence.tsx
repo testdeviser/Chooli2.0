@@ -50,6 +50,7 @@ export function IntroSequence() {
 
   const el = {
     hero: useRef<HTMLDivElement>(null),
+    heroAside: useRef<HTMLDivElement>(null),
     hint: useRef<HTMLDivElement>(null),
     scrim: useRef<HTMLDivElement>(null),
     gusScrim: useRef<HTMLDivElement>(null),
@@ -60,6 +61,7 @@ export function IntroSequence() {
     () =>
       progress.subscribe((p) => {
         applyReveal(el.hero.current, p, TEXT.hero, 16);
+        applyReveal(el.heroAside.current, p, TEXT.hero, 16);
         applyReveal(el.hint.current, p, TEXT.scrollHint, 0);
         if (el.gusScrim.current) el.gusScrim.current.style.opacity = visibility(p, TEXT.gusScrim).toFixed(3);
         if (el.scrim.current) el.scrim.current.style.opacity = visibility(p, TEXT.aboutScrim).toFixed(3);
@@ -198,16 +200,26 @@ export function IntroSequence() {
 
         {/* Scene 01 - opening */}
         <div className={`intro-enter ${copyIn ? 'intro-entered' : ''} absolute inset-0 pointer-events-none`}>
-        <div ref={el.hero} data-reveal className="absolute bottom-[17svh] left-6 right-6 md:bottom-[11svh] md:left-[5.5vw] md:right-auto md:max-w-[34rem]">
+        <div ref={el.hero} data-reveal className="absolute bottom-[17svh] left-6 right-6 md:bottom-[16svh] md:left-[5.5vw] md:right-auto md:max-w-[42rem]">
           {/* soft local wash behind the copy so it reads on bright snow and on the night sky */}
           <div aria-hidden className="hero-wash" />
           <p className="glass-chip relative inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-sans text-[0.68rem] font-extrabold uppercase tracking-[0.26em] text-brand-orange">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand-orange" />
             {COPY.hero.eyebrow}
           </p>
-          <h1 className="text-legible relative mt-4 font-display text-[clamp(1.5rem,2.4vw,2.2rem)] font-bold leading-[1.22] text-paper">
-            {COPY.hero.line}
+          {/* phones keep the original size; desktop: larger, narrower, wraps to 4 balanced lines */}
+          <h1 className="text-legible relative mt-4 font-display text-[clamp(1.5rem,2.4vw,2.2rem)] font-bold leading-[1.22] text-paper md:max-w-[10.5em] md:text-balance md:text-[clamp(2rem,3.3vw,3.2rem)] md:leading-[1.12] md:tracking-[-0.01em]">
+            {/* each sentence balanced on its own (desktop: 2 + 2 lines) */}
+            <span className="block md:text-balance">{COPY.hero.line}</span>
+            <span className="block text-brand-orange md:text-balance">{COPY.hero.lineRest}</span>
           </h1>
+        </div>
+        {/* positioning paragraph, bottom-right, level with the headline */}
+        <div ref={el.heroAside} data-reveal className="absolute bottom-[16svh] right-[5.5vw] hidden max-w-[min(23rem,29vw)] md:block">
+          <div aria-hidden className="hero-wash" />
+          <p className="text-legible relative font-sans text-[clamp(0.95rem,1.05vw,1.08rem)] leading-relaxed text-paper/90">
+            {COPY.hero.aside}
+          </p>
         </div>
         <div ref={el.hint} data-reveal className="absolute bottom-6 left-1/2 -translate-x-1/2 md:bottom-8">
           <ScrollHint />
