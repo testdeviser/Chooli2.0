@@ -439,7 +439,11 @@ export const CINEMATIC = {
 export const COPY = {
   hero: {
     eyebrow: 'Chooli Digital Marketing',
-    line: 'Traversing the ups and downs of digital marketing to reach the mountain top together.',
+    /** headline, two lines: the second (orange) is the payoff */
+    line: 'Marketing Agencies are everywhere.',
+    lineRest: 'Legends are Harder to Find.',
+    /** short positioning paragraph, bottom-right of the opening screen */
+    aside: 'Chooli is a results-driven agency specializing in SEO, paid ads, web development, and e-commerce growth.',
   },
   gus: {
     eyebrow: 'Meet your guide',
@@ -462,8 +466,13 @@ export const COPY = {
     headingRest: 'A different kind of digital marketing agency.',
     bodyLead: 'No fluff. No nonsense.',
     body: 'Just thoughtful strategies, real expertise, and a team focused on helping businesses grow.',
-    /** the four core services (same titles as the services section, NextSection) */
-    services: ['SEO & Local Search', 'Paid Advertising', 'Web Development', 'E-Commerce Management'],
+    /** the four "why Chooli" points shown as cards (icons in AboutChooli, same order) */
+    points: [
+      { title: 'Focused Expertise', body: 'We stick to what we know and do it well.' },
+      { title: 'Real Results', body: 'Measurable work backed by real performance.' },
+      { title: 'Straightforward & Honest', body: 'No jargon. No smoke and mirrors.' },
+      { title: 'Business With Purpose', body: 'We believe doing good is good business.' },
+    ],
   },
 };
 

@@ -5,37 +5,35 @@ import { COPY, TEXT } from '@/lib/animation/config';
 import { progress } from '@/lib/animation/progress';
 import { applyReveal } from '@/lib/animation/reveal';
 
-/**
- * The four core services, with the same line icons as the services section below
- * (NextSection), in COPY.about.services order. Drawn on a 100 x 100 grid.
- */
-const SERVICE_ICONS = [
-  // SEO & Local Search
-  <svg key="seo" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round">
-    <circle cx="42" cy="42" r="30" />
-    <path d="M64 64 86 86" />
+/** line icons for the four "why Chooli" cards, in COPY.about.points order (24 x 24) */
+const POINT_ICONS = [
+  // Focused Expertise: target
+  <svg key="focus" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="8" />
+    <circle cx="12" cy="12" r="3.2" />
+    <path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22" />
   </svg>,
-  // Paid Advertising
-  <svg key="ads" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinejoin="round" strokeLinecap="round">
-    <path d="M14 40h18l40-22v64L32 60H14z" />
-    <path d="M32 40v20M24 60l6 24h10l-4-24" />
+  // Real Results: rising trend line
+  <svg key="results" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m3 15.5 5-5 4 3.5 8-8" />
+    <path d="M14.5 6H20v5.5" />
+    <path d="M3 20.5h18" />
   </svg>,
-  // Web Development
-  <svg key="web" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M36 22 10 50l26 28M64 22l26 28-26 28" />
+  // Straightforward & Honest: speech bubble
+  <svg key="honest" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3.5 5h17v11h-11l-6 4.5z" />
   </svg>,
-  // E-Commerce Management
-  <svg key="shop" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6.5" strokeLinejoin="round" strokeLinecap="round">
-    <path d="M18 30h64v56H18zM18 30l8-14h48l8 14" />
-    <path d="M38 46a12 12 0 0 0 24 0" />
+  // Business With Purpose: heart
+  <svg key="purpose" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.6 4.5 4.5 0 0 1 20 9.5c0 6.1-8 11-8 11Z" />
   </svg>,
 ];
 
 /**
- * Final intro screen: "Meet Chooli" with the four core services, kept short.
+ * Final intro screen: "Meet Chooli" with four short "why Chooli" points, kept short.
  * Sits to the right of Gus in the three-quarter shot.
  *
- *   two-tone statement headline -> short paragraph -> four service cards (icon + number + title)
+ *   two-tone statement headline -> short paragraph -> four cards (icon + number + title + one line)
  *
  * Each piece has a `data-step` (scroll offset after the screen starts) and stays once shown.
  */
@@ -68,24 +66,25 @@ export function AboutChooli() {
       </p>
 
       <ul className="mt-7 grid grid-cols-2 gap-3">
-        {c.services.map((title, i) => (
+        {c.points.map((point, i) => (
           <li
-            key={title}
+            key={point.title}
             data-step={(0.03 + i * 0.009).toFixed(3)}
             data-rise="16"
             style={{ opacity: 0 }}
-            className="glass-panel flex min-h-[7.6rem] flex-col justify-between rounded-[18px] px-4 py-4 md:px-5"
+            className="glass-panel flex min-h-[7.6rem] flex-col rounded-[18px] px-4 py-4 md:px-5"
           >
             <span className="flex items-start justify-between">
               <span
                 aria-hidden
                 className="grid h-11 w-11 place-items-center rounded-2xl md:h-12 md:w-12 bg-brand-orange/15 text-brand-orange ring-1 ring-inset ring-brand-orange/35 [&>svg]:h-[26px] [&>svg]:w-[26px]"
               >
-                {SERVICE_ICONS[i]}
+                {POINT_ICONS[i]}
               </span>
               <span className="font-sans text-[0.68rem] font-extrabold tracking-[0.18em] text-brand-orange">{String(i + 1).padStart(2, '0')}</span>
             </span>
-            <span className="mt-3 hyphens-auto font-display text-[clamp(0.9rem,1.15vw,1.15rem)] font-bold leading-snug text-paper">{title}</span>
+            <span className="mt-4 hyphens-auto font-display text-[clamp(0.9rem,1.15vw,1.15rem)] font-bold leading-snug text-paper">{point.title}</span>
+            <span className="mt-1.5 font-sans text-[clamp(0.82rem,0.9vw,0.92rem)] leading-snug text-paper/70">{point.body}</span>
           </li>
         ))}
       </ul>
